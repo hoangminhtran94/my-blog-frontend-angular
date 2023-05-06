@@ -1,0 +1,24 @@
+<div class="bg-indigo-700">
+  <div class="mx-auto container">
+    <div class="flex flex-col gap-12 text-white pt-[48px] py-[150px]">
+      <div class="flex gap-7">
+        <img
+          alt="profile-image"
+          class="w-[200px] h-[200px] object-cover rounded-md border-[8px] border-white rotate-[-15deg]"
+          src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1570&q=80"
+        />
+        <h1 class="font-extrabold">Minh Hoang Tran's Blog</h1>
+      </div>
+      <h3>Hi, I am Hoang and I love to blog about tech and the world</h3>
+    </div>
+  </div>
+</div>
+
+<div
+  class="bg-white rounded-lg w-1/2 flex flex-col items-center gap-5 drop-shadow-md p-7 mx-auto mt-[-100px]"
+>
+  <h2>My Latest thoughs</h2>
+  <div class="grid grid-cols-3 w-full gap-6">
+    <though-item *ngFor="let blog of blogs().slice(0, 3)" [blog]="blog" />
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="container flex flex-col gap-6 py-6 mx-auto">
+  <div class="rounded-lg bg-indigo-700 text-white flex justify-between p-8">
+    <div>
+      <h1 class="font-bold">{{ blog()?.title?.toUpperCase() }}</h1>
+      <div class="flex gap-4 text-indigo-700">
+        <span class="bg-white p-2 rounded" *ngFor="let tag of blog()?.tags">{{
+          tag
+        }}</span>
+      </div>
+    </div>
+    <div>
+      <img
+        class="mx-auto w-[200px] h-[200px] rounded-md border-[8px] object-cover border-white rotate-3"
+        [src]="blog()?.image"
+        alt="detail-image"
+      />
+      <p class="mt-4">
+        By <strong>{{ blog()?.owner?.full_name }}</strong>
+      </p>
+      <p>
+        last updated on <strong>{{ blog()?.updated_at }}</strong>
+      </p>
+    </div>
+  </div>
+  <div class="border-slate-100 border shadow-lg bg-white rounded-lg p-8">
+    {{ blog()?.content }}
+  </div>
+</div>

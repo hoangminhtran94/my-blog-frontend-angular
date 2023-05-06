@@ -1,0 +1,14 @@
+<div
+  [routerLink]="blog.id"
+  class="flex border h-full cursor-pointer border-slate-50 flex-col items-center gap-3 shadow-lg rounded-xl hover:bg-indigo-700 hover:text-white hover:scale-105 transition-all p-6"
+>
+  <img
+    class="w-[100px] h-[100px] rounded-full object-cover"
+    alt="though-image"
+    [src]="blog.image"
+  />
+  <p class="font-bold">{{ blog.title }}</p>
+  <p class="text-center line-clamp-4">
+    {{ blog.content }}
+  </p>
+</div>
