@@ -1,0 +1,133 @@
+<div class="container mx-auto">
+  <h1 class="text-center -scroll-mb-3">Register</h1>
+  <form
+    class="border border-slate-100 flex flex-col gap-2 w-1/2 mx-auto rounded shadow-md p-4"
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()"
+    enctype="multipart/form-data"
+  >
+    <div class="flex flex-col gap-2">
+      <label for="profileImage">Profile Image</label>
+      <div class="w-[200px] h-[200px] mx-auto" (click)="fileInput.click()">
+        <span
+          *ngIf="!imageSrc"
+          class="w-full h-full p-4 rounded border text-center border-slate-300 flex justify-center items-center"
+          >Insert profile picture</span
+        >
+        <img
+          *ngIf="!!imageSrc"
+          class="w-full h-full rounded object-cover shadow-md"
+          [src]="imageSrc"
+          alt="placeholder-photo"
+        />
+      </div>
+      <input
+        (input)="onSelectFile($event)"
+        #fileInput
+        class="hidden"
+        id="profileImage"
+        name="profileImage"
+        type="file"
+        accept=".jpg,.png,.jpeg,.webp,.avif"
+        formControlName="profileImage"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="firstname">First Name</label>
+      <input
+        class="input"
+        id="firstname"
+        name="firstname"
+        formControlName="firstname"
+      />
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="
+          registerForm.get('firstname')?.invalid &&
+          registerForm.get('firstname')?.touched
+        "
+      >
+        This field is required
+      </p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="lastname">Last Name</label>
+      <input
+        class="input"
+        id="lastname"
+        name="lastname"
+        formControlName="lastname"
+      />
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="
+          registerForm.get('lastname')?.invalid &&
+          registerForm.get('lastname')?.touched
+        "
+      >
+        This field is required
+      </p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="email">Email</label>
+      <input class="input" id="email" name="email" formControlName="email" />
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="
+          registerForm.get('email')?.invalid &&
+          registerForm.get('email')?.touched
+        "
+      >
+        This field is required
+      </p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="password">Password</label>
+      <input
+        class="input"
+        id="password"
+        name="password"
+        formControlName="password"
+      />
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="
+          registerForm.get('password')?.invalid &&
+          registerForm.get('password')?.touched
+        "
+      >
+        This field is required
+      </p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        [ngClass]="{
+          input: true,
+          'ng-invalid':
+            registerForm.get('confirmPassword')?.value !==
+            registerForm.get('password')?.value
+        }"
+        id="confirmPassword"
+        name="confirmPassword"
+        formControlName="confirmPassword"
+      />
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="
+          registerForm.get('confirmPassword')?.invalid &&
+          registerForm.get('confirmPassword')?.touched
+        "
+      >
+        This field is required
+      </p>
+    </div>
+
+    <button class="rounded bg-slate-100 p-3 mt-3">Register</button>
+  </form>
+</div>

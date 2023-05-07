@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .input {
+    @apply border-2 border-slate-200 rounded-md shadow-sm p-2 focus:outline focus:outline-2 focus:outline-slate-400;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
 h1 {
   font-size: 56px;
 }
@@ -13,4 +22,8 @@ h2 {
 
 h3 {
   font-size: 26px;
+}
+
+input.ng-touched.ng-invalid {
+  outline: 2px solid red;
 }

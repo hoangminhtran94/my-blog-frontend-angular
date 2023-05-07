@@ -39,7 +39,6 @@ export class BlogServices {
       this.http
         .get<Blog>('http://localhost:8000/api/blogs/' + id)
         .subscribe((res) => {
-          console.log(res);
           this.currentBlog.set(res);
         });
     } else {
@@ -47,5 +46,17 @@ export class BlogServices {
         this.blogs().find((blog) => blog.id.toString() === id)!
       );
     }
+  }
+
+  addAComment(id: string, comment: string) {
+    this.http
+      .post(
+        `http://localhost:8000/api/blogs/${id}/comment`,
+        JSON.stringify({ comment: comment }),
+        { headers: { 'Content-type': 'application/json' } }
+      )
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
 }

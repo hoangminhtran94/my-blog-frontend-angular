@@ -9,6 +9,8 @@ import { BlogPageComponent } from './pages/blog/blog.component';
 import { BlogItemComponent } from './pages/blog/components/blog-item/blog-item.component';
 import { ThoughItemComponent } from './pages/home/components/though-item.component';
 import { BlogDetailPageComponent } from './pages/blog/blog-detail/blog-detail.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RegisterPage } from './pages/auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +21,15 @@ import { BlogDetailPageComponent } from './pages/blog/blog-detail/blog-detail.co
     BlogItemComponent,
     ThoughItemComponent,
     BlogDetailPageComponent,
+    RegisterPage,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
