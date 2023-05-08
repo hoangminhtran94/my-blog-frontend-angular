@@ -1,0 +1,43 @@
+<div class="container mx-auto">
+  <h1 class="text-center mb-3">Login</h1>
+  <form
+    class="border border-slate-100 flex flex-col gap-2 w-1/2 mx-auto rounded shadow-md p-4"
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    enctype="multipart/form-data"
+  >
+    <div class="flex flex-col gap-2">
+      <label for="email">Email</label>
+      <input class="input" id="email" name="email" formControlName="email" />
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="
+          loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+        "
+      >
+        This field is required
+      </p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="password">Password</label>
+      <input
+        class="input"
+        id="password"
+        name="password"
+        formControlName="password"
+      />
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="
+          loginForm.get('password')?.invalid &&
+          loginForm.get('password')?.touched
+        "
+      >
+        This field is required
+      </p>
+      <button class="rounded bg-slate-100 p-3 mt-3">Login</button>
+    </div>
+  </form>
+</div>

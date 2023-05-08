@@ -1,6 +1,11 @@
 <div class="container flex flex-col gap-5 mx-auto">
-  <h1 class="text-center">My collected posts</h1>
-  <div class="grid grid-cols-3 w-full gap-4">
-    <blog-item *ngFor="let blog of blogs()" [blog]="blog" />
-  </div>
+  <h1 class="text-center">My posts</h1>
+  <button
+    *ngIf="user()"
+    routerLink="new-post"
+    class="bg-slate-200 p-4 rounded shadow-sm font-bold mx-auto w-[200px] hover:scale-110 transition-all"
+  >
+    New Blog
+  </button>
+  <router-outlet></router-outlet>
 </div>

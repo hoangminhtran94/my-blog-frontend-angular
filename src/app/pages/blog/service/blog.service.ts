@@ -9,21 +9,29 @@ import { map } from 'rxjs';
 export class BlogServices {
   http = inject(HttpClient);
   public blogs = signal<Blog[]>([]);
+  public tags = signal<{ id: number; caption: string }[]>([]);
   public currentBlog = signal<Blog | null>(null);
 
   setBlogs() {
     this.http
-      .get<Blog[]>('http://localhost:8000/api/blogs/')
+      .get<{ blogs: Blog[]; tags: { id: number; caption: string }[] }>(
+        'http://localhost:8000/api/blogs/'
+      )
       .pipe(
         map((res, index) => {
-          return res.map((blog) => ({
-            ...blog,
-            updated_at: new Date(blog.updated_at).toLocaleDateString(),
-          }));
+          console.log(res);
+          return {
+            ...res,
+            blogs: res.blogs.map((blog) => ({
+              ...blog,
+              updated_at: new Date(blog.updated_at).toLocaleDateString(),
+            })),
+          };
         })
       )
       .subscribe((res) => {
-        this.blogs.set(res);
+        this.tags.set(res.tags);
+        this.blogs.set(res.blogs);
       });
   }
 
@@ -57,6 +65,20 @@ export class BlogServices {
       )
       .subscribe((res) => {
         console.log(res);
+      });
+  }
+  addABlog(formData: FormData) {
+    this.http
+      .post('http://localhost:8000/api/blogs/add-new', formData, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (e) => {
+          console.log(e);
+        },
       });
   }
 }

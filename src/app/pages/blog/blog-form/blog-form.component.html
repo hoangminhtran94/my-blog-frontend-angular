@@ -1,0 +1,110 @@
+<form
+  class="border border-slate-100 flex flex-col gap-2 w-1/2 mx-auto rounded shadow-md p-4"
+  [formGroup]="blogForm"
+  (ngSubmit)="onSubmit()"
+  enctype="multipart/form-data"
+>
+  <div class="flex flex-col gap-2">
+    <label for="blog-image">Blog Image</label>
+    <div class="w-[200px] h-[200px] mx-auto" (click)="fileInput.click()">
+      <span
+        *ngIf="!imageSrc"
+        class="w-full h-full p-4 rounded border text-center border-slate-300 flex justify-center items-center"
+        >Insert Blog Image</span
+      >
+      <img
+        *ngIf="!!imageSrc"
+        class="w-full h-full rounded object-cover shadow-md"
+        [src]="imageSrc"
+        alt="placeholder-photo"
+      />
+    </div>
+    <input
+      (input)="onSelectFile($event)"
+      #fileInput
+      class="hidden"
+      id="profileImage"
+      name="profileImage"
+      type="file"
+      accept=".jpg,.png,.jpeg,.webp,.avif"
+    />
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for="firstname">Title</label>
+    <input class="input" id="title" name="title" formControlName="title" />
+
+    <p
+      class="text-red-500 text-sm"
+      *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched"
+    >
+      This field is required
+    </p>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for="excerpt">Excerpt</label>
+    <input
+      class="input"
+      id="excerpt"
+      name="excerpt"
+      formControlName="excerpt"
+    />
+
+    <p
+      class="text-red-500 text-sm"
+      *ngIf="
+        blogForm.get('excerpt')?.invalid && blogForm.get('excerpt')?.touched
+      "
+    >
+      This field is required
+    </p>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for="content">Content</label>
+    <textarea
+      class="input resize-none"
+      id="content"
+      name="content"
+      rows="5"
+      formControlName="content"
+    ></textarea>
+
+    <p
+      class="text-red-500 text-sm"
+      *ngIf="
+        blogForm.get('content')?.invalid && blogForm.get('content')?.touched
+      "
+    >
+      This field is required
+    </p>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label for="content">Tags</label>
+    <div class="relative flex flex-col gap-2">
+      <div class="input text-slate-400" (click)="onDropdown()">
+        Select a tag or tags
+      </div>
+      <div class="flex gap-2">
+        <span
+          class="px-2 rounded bg-green-300"
+          *ngFor="let tag of selectedTags"
+          >{{ tag }}</span
+        >
+      </div>
+
+      <ul
+        *ngIf="toggle"
+        class="absolute w-full top-[110%] border border-slate-100 shadow-md bg-white"
+      >
+        <li
+          *ngFor="let tag of tags()"
+          class="p-3 hover:bg-slate-100"
+          (click)="onSelectOption(tag.caption)"
+        >
+          {{ tag.caption }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <button class="rounded bg-slate-100 p-3 mt-3">Submit</button>
+</form>

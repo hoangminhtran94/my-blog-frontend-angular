@@ -27,3 +27,7 @@ h3 {
 input.ng-touched.ng-invalid {
   outline: 2px solid red;
 }
+
+textarea.ng-touched.ng-invalid {
+  outline: 2px solid red;
+}

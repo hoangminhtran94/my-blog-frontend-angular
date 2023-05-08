@@ -10,18 +10,18 @@
           >All posts</a
         >
       </span>
-      <span>
+      <span *ngIf="!user()">
         <a routerLinkActive="scale-110 font-bold" routerLink="/register"
           >Register</a
         >
       </span>
-      <span>
+
+      <span *ngIf="!user()">
         <a routerLinkActive="scale-110 font-bold" routerLink="/login">Login</a>
       </span>
-      <span>
-        <a routerLinkActive="scale-110 font-bold" routerLink="/logout"
-          >Logout</a
-        >
+      <span *ngIf="user()">{{ user()?.fullname }}</span>
+      <span *ngIf="user()" class="cursor-pointer" (click)="onLogout()">
+        Logout
       </span>
     </li>
   </ul>

@@ -11,6 +11,9 @@ import { ThoughItemComponent } from './pages/home/components/though-item.compone
 import { BlogDetailPageComponent } from './pages/blog/blog-detail/blog-detail.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RegisterPage } from './pages/auth/register/register.component';
+import { LoginPageComponent } from './pages/auth/login/login.component';
+import { BlogIndexPage } from './pages/blog/blog-index/blog-index.component';
+import { BlogFormPage } from './pages/blog/blog-form/blog-form.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { RegisterPage } from './pages/auth/register/register.component';
     ThoughItemComponent,
     BlogDetailPageComponent,
     RegisterPage,
+    LoginPageComponent,
+    BlogIndexPage,
+    BlogFormPage,
   ],
   imports: [
     BrowserModule,
