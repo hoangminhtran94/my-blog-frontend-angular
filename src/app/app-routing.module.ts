@@ -18,6 +18,7 @@ const routes: Routes = [
       { path: 'new-post', component: BlogFormPage },
     ],
   },
+  { path: 'blogs/:blogId/edit', component: BlogFormPage },
   { path: 'blogs/:blogId', component: BlogDetailPageComponent },
   { path: 'register', component: RegisterPage },
   { path: 'login', component: LoginPageComponent },

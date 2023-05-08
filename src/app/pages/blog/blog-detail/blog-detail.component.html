@@ -1,11 +1,22 @@
 <div class="container flex flex-col gap-6 py-6 mx-auto">
-  <div class="rounded-lg bg-indigo-700 text-white flex justify-between p-8">
-    <div>
-      <h1 class="font-bold">{{ blog()?.title?.toUpperCase() }}</h1>
+  <div class="rounded-lg bg-indigo-700 text-white flex p-8">
+    <div class="flex-1">
+      <div class="flex gap-10 items-center">
+        <h1 class="font-bold">{{ blog()?.title?.toUpperCase() }}</h1>
+        <button
+          *ngIf="user()"
+          routerLink="edit"
+          class="rounded bg-indigo-800 p-3 px-5 text-white"
+        >
+          Edit
+        </button>
+      </div>
       <div class="flex gap-4 text-indigo-700">
-        <span class="bg-white p-2 rounded" *ngFor="let tag of blog()?.tags">{{
-          tag
-        }}</span>
+        <span
+          class="bg-white p-2 px-4 rounded"
+          *ngFor="let tag of blog()?.tags"
+          >{{ tag }}</span
+        >
       </div>
     </div>
     <div>
@@ -22,27 +33,43 @@
       </p>
     </div>
   </div>
-  <div class="border-slate-100 border shadow-lg bg-white rounded-lg p-8">
-    {{ blog()?.content }}
-  </div>
+  <div
+    [innerHTML]="blog()?.content!.split('\n').join('<br />')"
+    class="border-indigo-400 border shadow-lg bg-white rounded-lg p-8"
+  ></div>
 
-  <p class="font-bold">Comments</p>
-  <div class="bg-slate-100 shadow-md rounded p-4 flex flex-col gap-3">
-    <div class="flex gap-3 items-center">
+  <div
+    class="bg-slate-50 border border-indigo-400 shadow-md rounded p-5 flex flex-col gap-3"
+  >
+    <p class="font-bold">Comments</p>
+    <h3
+      class="text-center"
+      *ngIf="!blog()?.comments || (blog()?.comments)!.length === 0"
+    >
+      There is no comments
+    </h3>
+    <div
+      *ngFor="let comment of blog()?.comments"
+      class="flex gap-3 items-center"
+    >
       <img
-        src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+        [src]="comment.owner.profilePicture"
         alt="comment-image"
         class="w-8 h-8 object-cover rounded-full"
       />
-      <div class="p-3 rounded-lg shadow-md bg-white">This is a comment</div>
+      <div class="p-3 rounded-lg shadow-md bg-white">
+        <p class="font-bold text-indigo-700">{{ comment.owner.fullname }}</p>
+        <p>{{ comment.comment }}</p>
+      </div>
     </div>
     <form
+      *ngIf="user()"
       class="flex gap-3 items-center"
       [formGroup]="commentForm"
       (ngSubmit)="onComment()"
     >
       <img
-        src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+        [src]="user()?.profilePicture"
         alt="comment-profile-image"
         class="w-8 h-8 object-cover rounded-full"
       />

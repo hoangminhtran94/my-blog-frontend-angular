@@ -2,6 +2,7 @@ import { Injectable, signal, inject, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Blog } from 'src/app/utils/models/Blog.model';
 import { map } from 'rxjs';
+import { Comment } from 'src/app/utils/models/Comment.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,39 +43,84 @@ export class BlogServices {
   //     ]);
   //     return this.blogs();
   //   }
-  getABlog(id: string) {
+  async getABlog(id: string) {
     if (this.blogs().length === 0) {
-      this.http
-        .get<Blog>('http://localhost:8000/api/blogs/' + id)
-        .subscribe((res) => {
-          this.currentBlog.set(res);
-        });
+      return new Promise((resolve, reject) => {
+        this.http
+          .get<Blog>('http://localhost:8000/api/blogs/' + id)
+          .subscribe((res) => {
+            resolve(res);
+            this.currentBlog.set({
+              ...res,
+              updated_at: new Date(res.updated_at).toLocaleDateString(),
+            });
+          });
+      });
     } else {
-      this.currentBlog.set(
-        this.blogs().find((blog) => blog.id.toString() === id)!
-      );
+      return new Promise((resolve, reject) => {
+        this.currentBlog.set(
+          this.blogs().find((blog) => blog.id.toString() === id)!
+        );
+        resolve(this.blogs().find((blog) => blog.id.toString() === id)!);
+      });
     }
   }
 
-  addAComment(id: string, comment: string) {
+  addAComment(id: string, formData: FormData) {
     this.http
-      .post(
+      .post<Comment>(
         `http://localhost:8000/api/blogs/${id}/comment`,
-        JSON.stringify({ comment: comment }),
-        { headers: { 'Content-type': 'application/json' } }
+        formData,
+        {
+          withCredentials: true,
+        }
       )
       .subscribe((res) => {
-        console.log(res);
+        this.blogs.mutate((blogs) => {
+          const index = blogs.findIndex((blog) => blog.id.toString() === id);
+          const currentBlog = blogs[index];
+          blogs[index] = {
+            ...currentBlog,
+            comments: [...currentBlog.comments, res],
+          };
+        });
+        this.currentBlog.mutate((blog) => {
+          blog?.comments.push(res);
+        });
       });
   }
   addABlog(formData: FormData) {
     this.http
-      .post('http://localhost:8000/api/blogs/add-new', formData, {
+      .post<Blog>('http://localhost:8000/api/blogs/add-new', formData, {
         withCredentials: true,
       })
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.blogs.update((blogs) => [
+            {
+              ...res,
+              updated_at: new Date(res.updated_at).toLocaleDateString(),
+            },
+            ...blogs,
+          ]);
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
+  }
+  updateABlog(formData: FormData, id: string) {
+    this.http
+      .post<Blog>('http://localhost:8000/api/blogs/' + id, formData, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (res) => {
+          this.blogs.mutate((blogs) => {
+            const index = blogs.findIndex((blog) => blog.id.toString() === id);
+            console.log(index);
+            blogs[index] = res;
+          });
         },
         error: (e) => {
           console.log(e);

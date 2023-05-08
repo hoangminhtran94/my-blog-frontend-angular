@@ -7,6 +7,12 @@
   .input {
     @apply border-2 border-slate-200 rounded-md shadow-sm p-2 focus:outline focus:outline-2 focus:outline-slate-400;
   }
+  .label {
+    @apply font-semibold;
+  }
+  .form {
+    @apply border border-indigo-200 flex flex-col gap-2 w-1/2 mx-auto rounded shadow-md p-4;
+  }
 }
 
 * {

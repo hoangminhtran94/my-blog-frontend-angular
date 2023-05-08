@@ -14,6 +14,7 @@ import { RegisterPage } from './pages/auth/register/register.component';
 import { LoginPageComponent } from './pages/auth/login/login.component';
 import { BlogIndexPage } from './pages/blog/blog-index/blog-index.component';
 import { BlogFormPage } from './pages/blog/blog-form/blog-form.component';
+import { FooterComponent } from './UI/Footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { BlogFormPage } from './pages/blog/blog-form/blog-form.component';
     LoginPageComponent,
     BlogIndexPage,
     BlogFormPage,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

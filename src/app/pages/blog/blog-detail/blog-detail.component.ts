@@ -15,6 +15,7 @@ import {
 import { Blog } from 'src/app/utils/models/Blog.model';
 import { BlogServices } from '../service/blog.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'blog-detail-page',
@@ -23,18 +24,21 @@ import { ActivatedRoute } from '@angular/router';
 export class BlogDetailPageComponent implements OnInit {
   id: string = '';
   blogServices = inject(BlogServices);
-  router = inject(ActivatedRoute);
+  route = inject(ActivatedRoute);
+  authService = inject(AuthService);
   blog = this.blogServices.currentBlog;
-
+  user = this.authService.userData;
   commentForm = new FormGroup({
     comment: new FormControl(null, Validators.required),
   });
 
   onComment() {
-    this.blogServices.addAComment(this.id, this.commentForm.value.comment!);
+    const formdata = new FormData();
+    formdata.append('comment', this.commentForm.get('comment')!.value!);
+    this.blogServices.addAComment(this.id, formdata);
   }
   ngOnInit(): void {
-    const id = this.router.snapshot.params['blogId'];
+    const id = this.route.snapshot.params['blogId'];
     this.id = id;
     this.blogServices.getABlog(id);
   }

@@ -1,14 +1,17 @@
 <div class="container mx-auto">
-  <h1 class="text-center mb-3">Register</h1>
+  <h1 class="text-center text-indigo-800 mb-3">Register</h1>
   <form
-    class="border border-slate-100 flex flex-col gap-2 w-1/2 mx-auto rounded shadow-md p-4"
+    class="form"
     [formGroup]="registerForm"
     (ngSubmit)="onSubmit()"
     enctype="multipart/form-data"
   >
     <div class="flex flex-col gap-2">
-      <label for="profileImage">Profile Image</label>
-      <div class="w-[200px] h-[200px] mx-auto" (click)="fileInput.click()">
+      <label class="label" for="profileImage">Profile Image</label>
+      <div
+        class="w-[200px] h-[200px] mx-auto cursor-pointer"
+        (click)="fileInput.click()"
+      >
         <span
           *ngIf="!imageSrc"
           class="w-full h-full p-4 rounded border text-center border-slate-300 flex justify-center items-center"
@@ -33,7 +36,7 @@
       />
     </div>
     <div class="flex flex-col gap-2">
-      <label for="firstname">First Name</label>
+      <label class="label" for="firstname">First Name</label>
       <input
         class="input"
         id="firstname"
@@ -52,7 +55,7 @@
       </p>
     </div>
     <div class="flex flex-col gap-2">
-      <label for="lastname">Last Name</label>
+      <label class="label" for="lastname">Last Name</label>
       <input
         class="input"
         id="lastname"
@@ -71,7 +74,7 @@
       </p>
     </div>
     <div class="flex flex-col gap-2">
-      <label for="email">Email</label>
+      <label class="label" for="email">Email</label>
       <input class="input" id="email" name="email" formControlName="email" />
 
       <p
@@ -85,7 +88,7 @@
       </p>
     </div>
     <div class="flex flex-col gap-2">
-      <label for="password">Password</label>
+      <label class="label" for="password">Password</label>
       <input
         class="input"
         id="password"
@@ -104,7 +107,7 @@
       </p>
     </div>
     <div class="flex flex-col gap-2">
-      <label for="confirmPassword">Confirm Password</label>
+      <label class="label" for="confirmPassword">Confirm Password</label>
       <input
         [ngClass]="{
           input: true,
@@ -129,5 +132,8 @@
     </div>
 
     <button class="rounded bg-slate-100 p-3 mt-3">Register</button>
+    <a class="text-center text-sm text-slate-500" routerLink="/login"
+      >Already have an account? Login now</a
+    >
   </form>
 </div>

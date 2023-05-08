@@ -1,5 +1,5 @@
 import { User } from './User.model';
-
+import { Comment } from './Comment.model';
 export interface Blog {
   id: string;
   title: string;
@@ -9,4 +9,5 @@ export interface Blog {
   owner: User;
   updated_at: string;
   tags: string[];
+  comments: Comment[];
 }
