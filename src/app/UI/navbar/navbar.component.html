@@ -19,7 +19,11 @@
       <span *ngIf="!user()">
         <a routerLinkActive="scale-110 font-bold" routerLink="/login">Login</a>
       </span>
-      <span *ngIf="user()">{{ user()?.fullname }}</span>
+      <span *ngIf="user()">
+        <a routerLinkActive=" text-lg font-bold" routerLink="/profile">{{
+          user()?.fullname
+        }}</a>
+      </span>
       <span *ngIf="user()" class="cursor-pointer" (click)="onLogout()">
         Logout
       </span>

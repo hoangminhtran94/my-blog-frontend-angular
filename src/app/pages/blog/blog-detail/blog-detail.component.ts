@@ -21,7 +21,7 @@ import { AuthService } from '../../auth/auth.service';
   selector: 'blog-detail-page',
   templateUrl: './blog-detail.component.html',
 })
-export class BlogDetailPageComponent implements OnInit {
+export class BlogDetailPage implements OnInit {
   id: string = '';
   blogServices = inject(BlogServices);
   route = inject(ActivatedRoute);

@@ -7,7 +7,7 @@ import { AuthService } from '../auth/auth.service';
   selector: 'blog-page',
   templateUrl: './blog.component.html',
 })
-export class BlogPageComponent implements OnInit {
+export class BlogPage implements OnInit {
   blogServices = inject(BlogServices);
   authService = inject(AuthService);
   user = this.authService.userData;

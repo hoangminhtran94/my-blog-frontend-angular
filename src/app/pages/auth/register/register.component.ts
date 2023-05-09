@@ -1,4 +1,11 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  inject,
+  effect,
+  Injector,
+} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 
@@ -10,8 +17,12 @@ export class RegisterPage {
   // password = signal('');
   // confirmPassword = signal('');
   file?: File;
+  error?: string;
   imageSrc?: string;
+  timeout = signal(3);
+  success = false;
   authService = inject(AuthService);
+  injector = inject(Injector);
   registerForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     lastname: new FormControl('', Validators.required),
@@ -43,7 +54,23 @@ export class RegisterPage {
     formData.append('password', password);
     formData.append('profilePicture', file);
 
-    this.authService.register(formData);
+    try {
+      await this.authService.register(formData);
+      this.success = true;
+      effect(
+        (onCleanUp) => {
+          const interval = setInterval(() => {
+            this.timeout.update((timeout) => timeout - 1);
+          }, 1000);
+          onCleanUp(() => {
+            clearInterval(interval);
+          });
+        },
+        { injector: this.injector }
+      );
+    } catch (error: any) {
+      this.error = error.message;
+    }
   };
 
   // onPasswordChanged(event: Event) {

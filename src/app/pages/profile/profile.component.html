@@ -1,0 +1,25 @@
+<div class="container flex flex-col gap-4 mx-auto">
+  <h1 class="text-center text-indigo-800">Profile</h1>
+  <div class="form gap-6 !p-10">
+    <div class="mx-auto w-[200px] h-[200px]">
+      <img
+        class="rounded-full shadow-sm w-full h-full object-cover"
+        [src]="user()?.profilePicture"
+        alt="profile-image"
+      />
+    </div>
+    <div>
+      <h2 class="font-bold">First name</h2>
+      <h3>{{ user()?.firstname }}</h3>
+    </div>
+    <div>
+      <h2 class="font-bold">Last name</h2>
+      <h3>{{ user()?.lastname }}</h3>
+    </div>
+    <div>
+      <h2 class="font-bold">Email address</h2>
+      <h3>{{ user()?.email }}</h3>
+    </div>
+    <button class="p-4 mt-6 bg-indigo-50 rounde">Edit profile</button>
+  </div>
+</div>

@@ -27,37 +27,73 @@ export class AuthService {
     }
   };
 
-  register(formdata: FormData) {
-    this.http
-      .post('http://localhost:8000/api/auth/register', formdata)
-      .subscribe((res) => console.log(res));
+  async register(formdata: FormData) {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .post(
+          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/auth/register',
+          formdata
+        )
+        .subscribe({
+          next: (res) => resolve(res),
+          error: (e) => {
+            resolve(null);
+          },
+        });
+    });
+
+    const res = await promise;
+
+    if (res) {
+      setTimeout(() => {
+        this.router.navigateByUrl('/login');
+      }, 3000);
+    } else {
+      throw new Error('Could not register right now, please try again');
+    }
   }
 
-  login(formdata: FormData) {
-    this.http
-      .post('http://localhost:8000/api/auth/login', formdata, {
-        withCredentials: true,
-      })
-      .pipe(
-        catchError((e: HttpErrorResponse) => {
-          return throwError('Something wrong happened');
-        })
-      )
-      .subscribe({
-        next: (res: any) => {
-          this.userData.set(res.data);
-          localStorage.setItem('user', JSON.stringify(res.data));
-          this.router.navigateByUrl('/');
-        },
-        error: (e) => {
-          console.log(e);
-        },
-      });
+  async login(formdata: FormData) {
+    const promise = new Promise((resolve, reject) => {
+      this.http
+        .post(
+          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/auth/login',
+          formdata,
+          {
+            withCredentials: true,
+          }
+        )
+        .pipe(
+          catchError((e: HttpErrorResponse) => {
+            return throwError('Something wrong happened');
+          })
+        )
+        .subscribe({
+          next: (res: any) => {
+            this.userData.set(res.data);
+            resolve(res);
+          },
+          error: (e) => {
+            resolve(null);
+          },
+        });
+    });
+    const res = await promise;
+
+    if (res) {
+      localStorage.setItem('user', JSON.stringify((res as any).data));
+      this.router.navigateByUrl('/');
+    } else {
+      throw new Error('Authentication failed, please try again');
+    }
   }
 
   logout() {
     this.http
-      .post('http://localhost:8000/api/auth/logout', null)
+      .post(
+        'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/auth/logout',
+        null
+      )
       .pipe(
         catchError((e: HttpErrorResponse) => {
           return throwError(() => {
@@ -69,6 +105,7 @@ export class AuthService {
         next: (res) => {
           this.userData.set(null);
           localStorage.removeItem('user');
+          this.router.navigateByUrl('/login');
         },
       });
   }

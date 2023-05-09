@@ -1,27 +1,34 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomePageComponent } from './pages/home/home.component';
-import { BlogPageComponent } from './pages/blog/blog.component';
-import { BlogDetailPageComponent } from './pages/blog/blog-detail/blog-detail.component';
+import { HomePage } from './pages/home/home.component';
+import { BlogPage } from './pages/blog/blog.component';
+import { BlogDetailPage } from './pages/blog/blog-detail/blog-detail.component';
 import { RegisterPage } from './pages/auth/register/register.component';
-import { LoginPageComponent } from './pages/auth/login/login.component';
+import { LoginPage } from './pages/auth/login/login.component';
 import { BlogIndexPage } from './pages/blog/blog-index/blog-index.component';
 import { BlogFormPage } from './pages/blog/blog-form/blog-form.component';
+import { ProfilePage } from './pages/profile/profile.component';
+import { AuthGuard } from './utils/guard/guard.service';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomePageComponent },
+  { path: 'home', component: HomePage },
   {
     path: 'blogs',
-    component: BlogPageComponent,
+    component: BlogPage,
     children: [
       { path: '', component: BlogIndexPage },
-      { path: 'new-post', component: BlogFormPage },
+      { path: 'new-post', component: BlogFormPage, canActivate: [AuthGuard] },
     ],
   },
-  { path: 'blogs/:blogId/edit', component: BlogFormPage },
-  { path: 'blogs/:blogId', component: BlogDetailPageComponent },
+  {
+    path: 'blogs/:blogId/edit',
+    component: BlogFormPage,
+    canActivate: [AuthGuard],
+  },
+  { path: 'blogs/:blogId', component: BlogDetailPage },
   { path: 'register', component: RegisterPage },
-  { path: 'login', component: LoginPageComponent },
+  { path: 'login', component: LoginPage },
+  { path: 'profile', component: ProfilePage, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

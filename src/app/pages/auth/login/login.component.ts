@@ -2,14 +2,15 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 @Component({ selector: 'login-page', templateUrl: './login.component.html' })
-export class LoginPageComponent {
+export class LoginPage {
   loginForm = new FormGroup({
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
   authService = inject(AuthService);
+  error?: string;
 
-  onSubmit() {
+  async onSubmit() {
     const email = this.loginForm.get('email')!.value;
     const password = this.loginForm.get('password')!.value;
     if (!email || !password) {
@@ -19,6 +20,10 @@ export class LoginPageComponent {
     formData.append('email', email);
     formData.append('password', password);
 
-    this.authService.login(formData);
+    try {
+      await this.authService.login(formData);
+    } catch (error: any) {
+      this.error = error.message;
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BlogServices } from '../service/blog.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'blog-form-page',
@@ -15,6 +15,7 @@ export class BlogFormPage implements OnInit {
   });
   blogService = inject(BlogServices);
   route = inject(ActivatedRoute);
+  router = inject(Router);
   id?: string;
   tags = this.blogService.tags;
   currentBlog = this.blogService.currentBlog;
@@ -23,7 +24,7 @@ export class BlogFormPage implements OnInit {
   toggle: boolean = false;
   selectedTags: string[] = [];
 
-  onSubmit = () => {
+  onSubmit = async () => {
     const title = this.blogForm.get('title')!.value;
     const content = this.blogForm.get('content')!.value;
     const excerpt = this.blogForm.get('excerpt')!.value;
@@ -39,10 +40,11 @@ export class BlogFormPage implements OnInit {
       formdata.append('tags', tag);
     });
     if (this.id) {
-      this.blogService.updateABlog(formdata, this.id);
+      await this.blogService.updateABlog(formdata, this.id);
     } else {
-      this.blogService.addABlog(formdata);
+      await this.blogService.addABlog(formdata);
     }
+    this.router.navigateByUrl('/blogs');
   };
 
   onSelectFile(event: Event) {

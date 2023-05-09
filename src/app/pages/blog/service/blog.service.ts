@@ -16,7 +16,7 @@ export class BlogServices {
   setBlogs() {
     this.http
       .get<{ blogs: Blog[]; tags: { id: number; caption: string }[] }>(
-        'http://localhost:8000/api/blogs/'
+        'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/'
       )
       .pipe(
         map((res, index) => {
@@ -47,7 +47,10 @@ export class BlogServices {
     if (this.blogs().length === 0) {
       return new Promise((resolve, reject) => {
         this.http
-          .get<Blog>('http://localhost:8000/api/blogs/' + id)
+          .get<Blog>(
+            'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/' +
+              id
+          )
           .subscribe((res) => {
             resolve(res);
             this.currentBlog.set({
@@ -69,7 +72,7 @@ export class BlogServices {
   addAComment(id: string, formData: FormData) {
     this.http
       .post<Comment>(
-        `http://localhost:8000/api/blogs/${id}/comment`,
+        `http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/${id}/comment`,
         formData,
         {
           withCredentials: true,
@@ -89,42 +92,61 @@ export class BlogServices {
         });
       });
   }
-  addABlog(formData: FormData) {
-    this.http
-      .post<Blog>('http://localhost:8000/api/blogs/add-new', formData, {
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (res) => {
-          this.blogs.update((blogs) => [
-            {
-              ...res,
-              updated_at: new Date(res.updated_at).toLocaleDateString(),
-            },
-            ...blogs,
-          ]);
-        },
-        error: (e) => {
-          console.log(e);
-        },
-      });
+  async addABlog(formData: FormData) {
+    return new Promise((resolve, reject) => {
+      this.http
+        .post<Blog>(
+          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/add-new',
+          formData,
+          {
+            withCredentials: true,
+          }
+        )
+        .subscribe({
+          next: (res) => {
+            resolve(res);
+            this.blogs.update((blogs) => [
+              {
+                ...res,
+                updated_at: new Date(res.updated_at).toLocaleDateString(),
+              },
+              ...blogs,
+            ]);
+          },
+          error: (e) => {
+            reject(e);
+            console.log(e);
+          },
+        });
+    });
   }
-  updateABlog(formData: FormData, id: string) {
-    this.http
-      .post<Blog>('http://localhost:8000/api/blogs/' + id, formData, {
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (res) => {
-          this.blogs.mutate((blogs) => {
-            const index = blogs.findIndex((blog) => blog.id.toString() === id);
-            console.log(index);
-            blogs[index] = res;
-          });
-        },
-        error: (e) => {
-          console.log(e);
-        },
-      });
+  async updateABlog(formData: FormData, id: string) {
+    return new Promise((resolve, reject) => {
+      this.http
+        .post<Blog>(
+          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/' +
+            id,
+          formData,
+          {
+            withCredentials: true,
+          }
+        )
+        .subscribe({
+          next: (res) => {
+            resolve(res);
+            this.blogs.mutate((blogs) => {
+              const index = blogs.findIndex(
+                (blog) => blog.id.toString() === id
+              );
+              console.log(index);
+              blogs[index] = res;
+            });
+          },
+          error: (e) => {
+            reject(e);
+            console.log(e);
+          },
+        });
+    });
   }
 }
