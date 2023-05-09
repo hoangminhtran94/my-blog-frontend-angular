@@ -68,9 +68,13 @@ export class BlogServices {
 
   addAComment(id: string, formData: FormData) {
     this.http
-      .post<Comment>(environment.apiURL + `/${id}/comment`, formData, {
-        withCredentials: true,
-      })
+      .post<Comment>(
+        environment.apiURL + `/api/blogs/${id}/comment`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      )
       .subscribe((res) => {
         this.blogs.mutate((blogs) => {
           const index = blogs.findIndex((blog) => blog.id.toString() === id);
