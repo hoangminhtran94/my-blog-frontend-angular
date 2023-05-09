@@ -8,6 +8,7 @@ import { Blog } from 'src/app/utils/models/Blog.model';
 import { catchError, map, tap, throwError } from 'rxjs';
 import { User } from 'src/app/utils/models/User.model';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -30,10 +31,7 @@ export class AuthService {
   async register(formdata: FormData) {
     const promise = new Promise((resolve, reject) => {
       this.http
-        .post(
-          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/auth/register',
-          formdata
-        )
+        .post(environment.apiURL + '/api/auth/register', formdata)
         .subscribe({
           next: (res) => resolve(res),
           error: (e) => {
@@ -56,13 +54,9 @@ export class AuthService {
   async login(formdata: FormData) {
     const promise = new Promise((resolve, reject) => {
       this.http
-        .post(
-          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/auth/login',
-          formdata,
-          {
-            withCredentials: true,
-          }
-        )
+        .post(environment.apiURL + '/api/auth/login', formdata, {
+          withCredentials: true,
+        })
         .pipe(
           catchError((e: HttpErrorResponse) => {
             return throwError('Something wrong happened');
@@ -90,10 +84,7 @@ export class AuthService {
 
   logout() {
     this.http
-      .post(
-        'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/auth/logout',
-        null
-      )
+      .post(environment.apiURL + '/api/auth/logout', null)
       .pipe(
         catchError((e: HttpErrorResponse) => {
           return throwError(() => {

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Blog } from 'src/app/utils/models/Blog.model';
 import { map } from 'rxjs';
 import { Comment } from 'src/app/utils/models/Comment.model';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -16,7 +16,7 @@ export class BlogServices {
   setBlogs() {
     this.http
       .get<{ blogs: Blog[]; tags: { id: number; caption: string }[] }>(
-        'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/'
+        environment.apiURL + '/api/blogs/'
       )
       .pipe(
         map((res, index) => {
@@ -47,10 +47,7 @@ export class BlogServices {
     if (this.blogs().length === 0) {
       return new Promise((resolve, reject) => {
         this.http
-          .get<Blog>(
-            'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/' +
-              id
-          )
+          .get<Blog>(environment.apiURL + '/api/blogs/' + id)
           .subscribe((res) => {
             resolve(res);
             this.currentBlog.set({
@@ -71,13 +68,9 @@ export class BlogServices {
 
   addAComment(id: string, formData: FormData) {
     this.http
-      .post<Comment>(
-        `http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/${id}/comment`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      )
+      .post<Comment>(environment.apiURL + `/${id}/comment`, formData, {
+        withCredentials: true,
+      })
       .subscribe((res) => {
         this.blogs.mutate((blogs) => {
           const index = blogs.findIndex((blog) => blog.id.toString() === id);
@@ -95,13 +88,9 @@ export class BlogServices {
   async addABlog(formData: FormData) {
     return new Promise((resolve, reject) => {
       this.http
-        .post<Blog>(
-          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/add-new',
-          formData,
-          {
-            withCredentials: true,
-          }
-        )
+        .post<Blog>(environment.apiURL + '/api/blogs/add-new', formData, {
+          withCredentials: true,
+        })
         .subscribe({
           next: (res) => {
             resolve(res);
@@ -123,14 +112,9 @@ export class BlogServices {
   async updateABlog(formData: FormData, id: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .post<Blog>(
-          'http://django-blog-env.eba-mawzye2i.us-east-1.elasticbeanstalk.com/api/blogs/' +
-            id,
-          formData,
-          {
-            withCredentials: true,
-          }
-        )
+        .post<Blog>(environment.apiURL + '/api/blogs/' + id, formData, {
+          withCredentials: true,
+        })
         .subscribe({
           next: (res) => {
             resolve(res);
