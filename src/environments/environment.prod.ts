@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   title: 'Minh Hoang Tran Blog',
-  apiURL: 'https://djangoblog.minhtrans.club',
+  apiURL: 'https://my-blog-django.herokuapp.com',
 };
