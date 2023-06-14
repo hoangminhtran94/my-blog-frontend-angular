@@ -9,6 +9,7 @@ import { catchError, map, tap, throwError } from 'rxjs';
 import { User } from 'src/app/utils/models/User.model';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { CookieService } from 'src/app/utils/cookie/cookie.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class AuthService {
   userData = signal<User | null>(null);
   http = inject(HttpClient);
   router = inject(Router);
+  cookieService = inject(CookieService);
 
   persistLogin = () => {
     const user = localStorage.getItem('user');
@@ -64,6 +66,13 @@ export class AuthService {
         )
         .subscribe({
           next: (res: any) => {
+            this.cookieService.setCookie(
+              'sessionid',
+              res.sessionid,
+              '/',
+              'None',
+              true
+            );
             this.userData.set(res.data);
             resolve(res);
           },
