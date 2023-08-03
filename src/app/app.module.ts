@@ -16,6 +16,7 @@ import { BlogIndexPage } from './pages/blog/blog-index/blog-index.component';
 import { BlogFormPage } from './pages/blog/blog-form/blog-form.component';
 import { FooterComponent } from './UI/Footer/footer.component';
 import { ProfilePage } from './pages/profile/profile.component';
+import { Spinner } from './UI/Spinner/Spinner.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ProfilePage } from './pages/profile/profile.component';
     BlogIndexPage,
     BlogFormPage,
     ProfilePage,
+    Spinner,
   ],
   imports: [
     BrowserModule,

@@ -20,6 +20,7 @@
   class="bg-white rounded-lg w-1/2 flex flex-col items-center gap-5 drop-shadow-md p-7 mx-auto mt-[-100px]"
 >
   <h2>My Latest thoughs</h2>
+  <spinner *ngIf="blogs().length === 0" />
   <div class="grid grid-cols-3 w-full gap-6">
     <though-item *ngFor="let blog of blogs().slice(0, 3)" [blog]="blog" />
   </div>

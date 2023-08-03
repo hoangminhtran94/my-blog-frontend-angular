@@ -57,11 +57,10 @@ export class BlogFormPage implements OnInit {
   onSelectOption = (option: string) => {
     this.selectedTags = [...this.selectedTags, option];
   };
-  async ngOnInit() {
+  ngOnInit() {
     const currentRouteId = this.route.snapshot.params['blogId'];
     this.id = currentRouteId;
     if (currentRouteId) {
-      await this.blogService.getABlog(currentRouteId);
       this.imageSrc = this.currentBlog()?.image;
       this.selectedTags = this.currentBlog()?.tags!;
       this.blogForm
